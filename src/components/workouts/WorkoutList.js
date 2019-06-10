@@ -8,8 +8,8 @@ const WorkoutList = ({ workouts }) => {
         <div className="workout-list section">
             {workouts && workouts.map(workout => {
                 return (
-                    <Link to={'/workout/' + workout.id}>
-                        <WorkoutSummary workout={workout} key={workout.id} />
+                    <Link to={'/workout/' + workout.id} key={workout.id} >
+                        <WorkoutSummary workout={workout} />
                     </Link>
                 )
             })}
