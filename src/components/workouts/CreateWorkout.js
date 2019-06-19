@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createExercise } from '../../store/actions/workoutActions';
+import { Redirect } from 'react-router-dom';
 
 class CreateWorkout extends Component {
     state = {
@@ -20,6 +21,11 @@ class CreateWorkout extends Component {
     }
 
     render() {
+
+        //destructuring to receive auth from props
+        const { auth } = this.props;
+        if(!auth.uid) return <Redirect to='/signin' />
+
         return (
             <div className="container">
                 <form className="white" onSubmit={this.handleSubmit}>
@@ -41,10 +47,16 @@ class CreateWorkout extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = (state) => {
+    return {
+        auth: state.firebase.auth
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
     return {
         createExercise: (workout) => dispatch(createExercise(workout))
     }
 }
 
-export default connect(null, mapDispatchToProps)(CreateWorkout);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWorkout);

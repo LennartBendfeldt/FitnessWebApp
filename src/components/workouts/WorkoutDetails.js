@@ -2,9 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 const WorkoutDetails = (props) => {
-    const { workout } = props;
+
+    //destructuring to receive workout and auth from props
+    const { workout, auth } = props;
+
+    if(!auth.uid) return <Redirect to='/signin' />
+
     if (workout) {
         return (
             <div className="container section workout-details">
@@ -37,7 +43,8 @@ const mapStateToProps = (state, ownProps) => {
     const workouts = state.firestore.data.workouts;
     const workout = workouts ? workouts[id] : null;
     return {
-        workout: workout
+        workout: workout,
+        auth: state.firebase.auth
     }
 }
 

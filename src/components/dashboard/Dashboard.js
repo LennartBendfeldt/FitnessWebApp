@@ -4,13 +4,18 @@ import WorkoutList from '../workouts/WorkoutList';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 class Dashboard extends Component {
 
     render() {
         // console.log(this.props);
-        const { workouts } = this.props;
+        const { workouts, auth } = this.props;
 
+        //redirect to signin if auth id doesnt exist (user not logged in.)
+        if(!auth.uid) return <Redirect to='/signin' />
+
+        //render dashboard for logged in users
         return (
             <div className="dashboard container">
                 <div className="row">
@@ -29,7 +34,8 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        workouts: state.firestore.ordered.workouts
+        workouts: state.firestore.ordered.workouts,
+        auth: state.firebase.auth
     }
 }
 
